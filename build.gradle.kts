@@ -25,6 +25,11 @@ repositories {
 }
 
 dependencies {
+//    database
+    implementation ("org.ktorm:ktorm-core:3.2.0")
+    implementation ("org.ktorm:ktorm-support-sqlite:3.2.0")
+    implementation ("org.xerial:sqlite-jdbc:3.34.0")
+
     implementation("io.ktor:ktor-server-cors:$ktor_version")
     implementation("io.ktor:ktor-auth-jwt:1.6.7")
     implementation("io.ktor:ktor-server-auth:$ktor_version")

@@ -2,6 +2,8 @@ package com.example
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.example.entities.ToDo
+import com.example.entities.ToDoDraft
 import com.example.oauth.authGithub
 import com.example.oauth.authenticationRoutes
 import io.ktor.client.*
@@ -18,7 +20,13 @@ import io.ktor.server.auth.jwt.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.response.*
-
+import com.example.repository.ToDoRepository
+import com.example.repository.InMemoryToDoRepository
+import com.example.repository.productRepository.DBProductRepository
+import com.example.repository.productRepository.DBSubcategoriesRepository
+import com.example.repository.productRepository.ProductRepository
+import com.example.repository.productRepository.SubcategoryRepository
+import io.ktor.server.request.*
 
 data class User(val id: String, val name: String)
 
@@ -49,7 +57,7 @@ fun Application.module() {
             }
             client = HttpClient(CIO)
         }
-        oauth("auth-aouth-github") {
+        oauth("auth-oauth-github") {
             urlProvider = { "http://localhost:8080/oauth-github" }
             client = HttpClient(CIO)
             providerLookup = {
@@ -96,6 +104,72 @@ fun Application.module() {
         json()
     }
     install(Routing) {
+
+//        val repository: ProductRepository = DBProductRepository()
+        val repository: SubcategoryRepository = DBSubcategoriesRepository()
+
+        get("/") {
+            call.respondText("Hello World!")
+        }
+        get("/product") {
+           call.respond(repository.getAllSubcategories())
+        }
+//        get("/product/{id}"){
+//            val id = call.parameters["id"]?.toIntOrNull()
+//
+//            if( id == null){
+//                call.respond(
+//                    HttpStatusCode.BadRequest, "id parametr has to be a number"
+//                )
+//                return@get
+//            }
+//            val todo = repository.getProduct(id)
+//
+//            if(todo == null) {
+//                call.respond(
+//                    HttpStatusCode.NotFound,
+//                    "found no todo for "
+//                )
+//            }else {
+//                call.respond(todo)
+//            }
+//        }
+//        post("/todos") {
+//            val todoDraft = call.receive<ToDoDraft>()
+//            val todo = repository.addTodo(todoDraft)
+//            call.respond(todo)
+//        }
+//        put("/todos/{id}"){
+//            val todoDraft = call.receive<ToDoDraft>()
+//            val todoId = call.parameters["id"]?.toIntOrNull()
+//
+//            if(todoId == null ){
+//                call.respond(HttpStatusCode.BadRequest, "Id paramerer has to be a number")
+//                return@put
+//            }
+//            val updated = repository.updateTodo(todoId, todoDraft)
+//
+//            if(updated) {
+//                call.respond(HttpStatusCode.OK)
+//            } else {
+//                    call.respond(
+//                        HttpStatusCode.NotFound, "not found the element with $todoId"
+//                    )
+//                }
+//        }
+//        delete("/todos/{id}"){
+//            val todoId = call.parameters["id"]?.toIntOrNull()
+//            if(todoId == null ){
+//                call.respond(HttpStatusCode.BadRequest, "Id paramerer has to be a number")
+//                return@delete
+//            }
+//            val removed = repository.removeTodo(todoId)
+//            if(removed){
+//                call.respond(HttpStatusCode.OK)
+//            } else {
+//                call.respond(HttpStatusCode.NotFound, "found no dodo with this $todoId")
+//            }
+//        }
         authenticationRoutes()
         authGithub()
     }
