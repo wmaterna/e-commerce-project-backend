@@ -1,8 +1,5 @@
 package com.example.entities.product
 
-import com.example.database.dbEntities.DBSubcategorieEntity
-import com.example.entities.opinion.Opinion
-import com.example.entities.subcategory.Subcategory
 
 data class Product(
     val id: Int,
@@ -10,6 +7,7 @@ data class Product(
     var description: String,
     var price: Long,
     var recommendations: String,
-    var subcategoryId: DBSubcategorieEntity
+    var url: String,
+    var subcategoryId: Int,
 //    var opinions: List<Opinion>
 )

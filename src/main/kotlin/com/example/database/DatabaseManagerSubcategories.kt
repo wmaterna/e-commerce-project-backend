@@ -1,42 +1,66 @@
 package com.example.database
 
-import com.example.database.dbEntities.DBSubcategorieEntity
+import com.example.database.dbEntities.DBProductTable
 import com.example.database.dbEntities.DBSubcategoryTable
-import org.ktorm.database.Database
-import org.ktorm.entity.firstOrNull
-import org.ktorm.entity.sequenceOf
-import org.ktorm.entity.toList
-import org.ktorm.dsl.eq
-import org.ktorm.logging.Slf4jLoggerAdapter
-import org.ktorm.support.sqlite.SQLiteDialect
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import com.example.entities.product.Product
+import com.example.entities.subcategory.Subcategory
+import org.ktorm.dsl.*
 
 class DatabaseManagerSubcategories {
-//    private val database = DatabaseManager()
-//    private val databaseConnection = database.dataBaseConnection()
 
+    private val database = DatabaseManager()
+    private val ktormDatabase = database.dataBaseConnection()
 
-    private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
-
-    private val ktormDatabase: Database
-
-    init {
-        ktormDatabase = Database.connect(
-            url = "jdbc:sqlite:sample.db",
-            logger = Slf4jLoggerAdapter(logger),
-            dialect = SQLiteDialect()
-        )
+    fun getAllSubcategories(): List<Subcategory> {
+        return ktormDatabase.from(DBSubcategoryTable)
+            .select()
+            .map {
+                Subcategory(
+                    it[DBSubcategoryTable.id]!!,
+                    it[DBSubcategoryTable.name]!!,
+                    ktormDatabase.from(DBProductTable)
+                        .select()
+                        .where { DBProductTable.subcategory eq it[DBSubcategoryTable.id]!! }
+                        .map {
+                            Product(
+                                it[DBProductTable.id]!!,
+                                it[DBProductTable.name]!!,
+                                it[DBProductTable.description]!!,
+                                it[DBProductTable.price]!!,
+                                it[DBProductTable.recommendations]!!,
+                                it[DBProductTable.url] !!,
+                                it[DBProductTable.subcategory]!!
+                            )
+                        }
+                )
+            }
     }
 
-    fun getAllSubcategories(): List<DBSubcategorieEntity> {
-        return ktormDatabase.sequenceOf(DBSubcategoryTable).toList()
-    }
+    fun getSubcategoryContent(id: Int): List<Subcategory> {
+        val products: List<Product>
+        products = ktormDatabase.from(DBProductTable)
+            .select()
+            .where { DBProductTable.subcategory eq id!! }
+            .map {
+                Product(
+                    it[DBProductTable.id]!!,
+                    it[DBProductTable.name]!!,
+                    it[DBProductTable.description]!!,
+                    it[DBProductTable.price]!!,
+                    it[DBProductTable.recommendations]!!,
+                    it[DBProductTable.url] !!,
+                    it[DBProductTable.subcategory]!!
+                )
+            }
 
-//    fun getSubcategory(id: Int): DBSubcategorieEntity? {
-//        return ktormDatabase.sequenceOf(DBSubcategoryTable).firstOrNull({ it.id eq id })
-//    }
+        val sub = ktormDatabase.from(DBSubcategoryTable)
+            .select()
+            .where { DBSubcategoryTable.id eq id }
+            .map{ row -> Subcategory(row[DBSubcategoryTable.id]!!, row[DBSubcategoryTable.name]!!, products)}
 
+        return sub
+
+  }
 
 
 }

@@ -1,9 +1,7 @@
 package com.example.database.dbEntities
 
 import com.example.entities.product.Product
-import io.ktor.server.html.*
 import org.ktorm.entity.Entity
-import org.ktorm.*
 import org.ktorm.schema.*
 
 object DBSubcategoryTable: Table<DBSubcategorieEntity>("subcategory") {
@@ -17,6 +15,7 @@ interface DBSubcategorieEntity: Entity<DBSubcategorieEntity> {
     val id: Int
     val name: String
     val products get() = listOf(DBProductEntity)
+//    val products get() = DBProductTable.findList { it.subcategory eq id }
 //    val productId: DBProductEntity
 //    val products: List<DBProductEntity>
 }

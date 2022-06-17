@@ -10,8 +10,8 @@ object DBProductTable: Table<DBProductEntity>("product") {
     val description = varchar("description").bindTo { it.description }
     val price = long("price").bindTo { it.price }
     val recommendations = varchar("recommendations").bindTo { it.recommendations }
+    val url = varchar("url").bindTo { it.url }
     val subcategory = int("subcategor_id").references(DBSubcategoryTable) { it.subcategory }
-
 }
 
 interface DBProductEntity: Entity<DBProductEntity> {
@@ -21,5 +21,6 @@ interface DBProductEntity: Entity<DBProductEntity> {
     val description: String
     val price: Long
     val recommendations: String
+    val url: String
     val subcategory: DBSubcategorieEntity
 }
