@@ -29,7 +29,7 @@ class DatabaseManagerSubcategories {
                                 it[DBProductTable.price]!!,
                                 it[DBProductTable.recommendations]!!,
                                 it[DBProductTable.url] !!,
-                                it[DBProductTable.subcategory]!!
+                                it[DBProductTable.subcategory]!!,
                             )
                         }
                 )

@@ -23,4 +23,5 @@ interface DBProductEntity: Entity<DBProductEntity> {
     val recommendations: String
     val url: String
     val subcategory: DBSubcategorieEntity
+    val opinions get() = listOf(DBOpinionEntity)
 }

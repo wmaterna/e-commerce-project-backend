@@ -2,8 +2,6 @@ package com.example
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import com.example.database.DatabaseManagerProduct
-import com.example.database.DatabaseManagerSubcategories
 import com.example.oauth.authGithub
 import com.example.oauth.authenticationRoutes
 import io.ktor.client.*
@@ -18,11 +16,8 @@ import io.ktor.server.auth.jwt.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.response.*
-import com.example.repository.productRepository.DBSubcategoriesRepository
-import com.example.repository.productRepository.ProductRepository
-import com.example.repository.productRepository.SubcategoryRepository
+import com.example.routing.*
 
-data class User(val id: String, val name: String)
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -98,58 +93,21 @@ fun Application.module() {
         json()
     }
     install(Routing) {
-
-//        val repository: SubcategoryRepository = DBSubcategoriesRepository()
-        val repository = DatabaseManagerSubcategories()
-        val productRepo = DatabaseManagerProduct()
-
+        subcategoryRoutes()
+        productsRouting()
+        categoriesRouting()
+        opinionRouting()
 
         get("/") {
             call.respondText("Hello World!")
         }
-        get("/subcategory") {
-           call.respond(repository.getAllSubcategories())
-        }
-        get("/subcategory/{id}"){
-            val id = call.parameters["id"]?.toIntOrNull()
-            if(id == null){
-                call.respond(
-                    HttpStatusCode.BadRequest,"Wrong id"
-                )
-                return@get
-            }
-            val subcategory = repository.getSubcategoryContent(id)
-            if(subcategory == null){
-                call.respond(
-                    HttpStatusCode.NotFound, "Not found subcategories"
-                )
-            }else {
-                call.respond(subcategory)
-            }
-        }
-        get("/products"){
-            call.respond(productRepo.getAllProducts())
-        }
-        get("/products/{id}"){
-        val id = call.parameters["id"]?.toIntOrNull()
-        if(id == null){
-            call.respond(
-                HttpStatusCode.BadRequest,"Wrong id"
-            )
-            return@get
-        }
-        val product = productRepo.getProduct(id)
-        if(product == null){
-            call.respond(
-                HttpStatusCode.NotFound, "Not found subcategories"
-            )
-        }else {
-            call.respond(product)
-        }
-    }
 
         authenticationRoutes()
         authGithub()
+        authenticate("auth-jwt") {
+            orderRouting()
+            userRouting()
+        }
     }
 }
 
