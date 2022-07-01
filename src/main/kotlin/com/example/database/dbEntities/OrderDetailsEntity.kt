@@ -1,6 +1,5 @@
 package com.example.database.dbEntities
 
-import com.example.database.dbEntities.DBSubcategoryTable.bindTo
 import org.ktorm.entity.Entity
 import org.ktorm.schema.*
 

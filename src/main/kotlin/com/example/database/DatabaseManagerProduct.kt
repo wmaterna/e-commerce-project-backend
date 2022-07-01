@@ -4,10 +4,8 @@ import com.example.database.dbEntities.*
 import com.example.entities.opinion.Opinion
 import com.example.entities.product.Product
 import com.example.entities.product.ProductDetails
-import com.example.entities.user.User
 import com.example.entities.user.UserOpinionInfo
 import org.ktorm.dsl.*
-import org.ktorm.entity.toList
 
 class DatabaseManagerProduct {
     private val database = DatabaseManager()

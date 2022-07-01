@@ -2,7 +2,6 @@ package com.example.routing
 
 import com.example.database.ManagerUser
 import com.example.entities.user.UserDraft
-import io.ktor.auth.jwt.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*

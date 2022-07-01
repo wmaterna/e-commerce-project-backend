@@ -1,8 +1,6 @@
 package com.example.routing
 
-import com.example.database.DatabaseManagerProduct
 import com.example.database.ManagerOrder
-import com.example.entities.order.OrderDraft
 import com.example.entities.orderDetails.NewOrder
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -46,25 +44,4 @@ fun Route.orderRouting(){
             }
         }
     }
-//
-//    get("/orders/{user_id}/{order_id}"){
-//        val user_id = call.parameters["user_id"]?.toIntOrNull()
-//        val order_id = call.parameters["order_id"]?.toIntOrNull()
-//        if(user_id == null || order_id == null){
-//            call.respond(
-//                HttpStatusCode.BadRequest,"Wrong id"
-//            )
-//            return@get
-//        }
-//        val orders = ordersRepo.getOrderDetails(user_id, order_id)
-//
-//        if(orders == null){
-//            call.respond(
-//                HttpStatusCode.NotFound, "Not found orders"
-//            )
-//        } else {
-//            call.respond(orders)
-//        }
-//
-//    }
 }

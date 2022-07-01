@@ -1,6 +1,5 @@
 package com.example.database.dbEntities
 
-import com.example.database.dbEntities.DBProductTable.references
 import org.ktorm.entity.Entity
 import org.ktorm.schema.*
 

@@ -5,7 +5,7 @@ data class User(
     var name: String?,
     var city: String?,
     var street: String?,
-    var apartment_no: String?,
-    var post_code: String?,
-    var oauth_id: String?
+    var apartmentNo: String?,
+    var postCode: String?,
+    var oauthId: String?
 )

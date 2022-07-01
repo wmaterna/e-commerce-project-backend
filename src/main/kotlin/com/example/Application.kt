@@ -6,8 +6,6 @@ import com.stripe.model.PaymentIntent
 import com.stripe.param.PaymentIntentCreateParams
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import com.example.database.ManagerOrder
-import com.example.entities.order.OrderDraft
 import com.example.entities.payment.Payments
 import com.example.oauth.authGithub
 import com.example.oauth.authenticationRoutes

@@ -11,10 +11,10 @@ class ManagerOpinion {
     private val database = DatabaseManager()
     private val ktormDatabase = database.dataBaseConnection()
 
-    fun addOpinion(newOpinion: OpinionDraft, oauth_id: String): Opinion {
+    fun addOpinion(newOpinion: OpinionDraft, oauthId: String): Opinion {
         var user = ktormDatabase.from(DBUserTable)
             .select()
-            .where { DBUserTable.oauth_id eq oauth_id}
+            .where { DBUserTable.oauthId eq oauthId}
             .map {
                 UserOpinionInfo(it[DBUserTable.id]!!, it[DBUserTable.name])
             }

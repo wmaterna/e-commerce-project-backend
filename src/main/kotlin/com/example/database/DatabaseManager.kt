@@ -5,8 +5,6 @@ import org.ktorm.logging.Slf4jLoggerAdapter
 import org.ktorm.support.sqlite.SQLiteDialect
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.ktorm.entity.sequenceOf
-import org.ktorm.entity.toList
 
 class DatabaseManager {
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)

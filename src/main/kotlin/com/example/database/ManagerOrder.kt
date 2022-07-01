@@ -19,16 +19,16 @@ class ManagerOrder {
     fun getUsersOrders(id: String): List<Order>{
         val user = ktormDatabase.from(DBUserTable)
             .select()
-            .where { DBUserTable.oauth_id eq id }
+            .where { DBUserTable.oauthId eq id }
             .map {
                 User(
                     it[DBUserTable.id]!!,
                     it[DBUserTable.name],
                     it[DBUserTable.city],
                     it[DBUserTable.street],
-                    it[DBUserTable.apartment_no],
-                    it[DBUserTable.post_code],
-                    it[DBUserTable.oauth_id]
+                    it[DBUserTable.apartmentNo],
+                    it[DBUserTable.postCode],
+                    it[DBUserTable.oauthId]
                 )
             }
 
@@ -69,72 +69,21 @@ class ManagerOrder {
             }
         return order
     }
-
-//    fun getOrderDetails(user_id: Int, order_id: Int): List<Order> {
-//        return ktormDatabase.from(DBOrderTable)
-//            .select()
-//            .where { (DBOrderTable.user eq user_id) and (DBOrderTable.id eq order_id) }
-//            .map {
-//                Order(
-//                    it[DBOrderTable.id]!!,
-//                    it[DBOrderTable.date]!!,
-//                    it[DBOrderTable.address]!!,
-//                    it[DBOrderTable.price]!!,
-//                    ktormDatabase.from(DBUserTable)
-//                        .select()
-//                        .where { DBUserTable.id eq user_id }
-//                        .map {
-//                            User(
-//                                it[DBUserTable.id]!!,
-//                                it[DBUserTable.name],
-//                                it[DBUserTable.city],
-//                                it[DBUserTable.street],
-//                                it[DBUserTable.apartment_no],
-//                                it[DBUserTable.post_code],
-//                                it[DBUserTable.oauth_id]
-//                            )
-//                        },
-//                    ktormDatabase.from(DBOrderDetailsTable)
-//                        .select()
-//                        .where { DBOrderDetailsTable.order eq it[DBOrderTable.id]!! }
-//                        .map {
-//                            OrderDetails(
-//                                it[DBOrderDetailsTable.id]!!,
-//                                it[DBOrderDetailsTable.order]!!,
-//                                it[DBOrderDetailsTable.quantity]!!,
-//                                ktormDatabase.from(DBProductTable)
-//                                    .select()
-//                                    .where { DBProductTable.id eq it[DBOrderDetailsTable.product]!! }
-//                                    .map {
-//                                        Product(
-//                                            it[DBProductTable.id]!!,
-//                                            it[DBProductTable.name]!!,
-//                                            it[DBProductTable.description]!!,
-//                                            it[DBProductTable.price]!!,
-//                                            it[DBProductTable.recommendations]!!,
-//                                            it[DBProductTable.url]!!,
-//                                            it[DBProductTable.subcategory]!!,
-//                                        )
-//                                    }
-//
-//                            )
-//                        })
-//            }
-//    }
+    
 
     fun addOrder(newOrder: NewOrder, orderId: String): OrderDraft {
         val user = ktormDatabase.from(DBUserTable)
             .select()
-            .where { DBUserTable.oauth_id eq orderId }
+            .where { DBUserTable.oauthId eq orderId }
             .map {
                 User(
                     it[DBUserTable.id]!!,
                     it[DBUserTable.name],
                     it[DBUserTable.city],
                     it[DBUserTable.street],
-                    it[DBUserTable.apartment_no],
-                    it[DBUserTable.post_code],
-                    it[DBUserTable.oauth_id]
+                    it[DBUserTable.apartmentNo],
+                    it[DBUserTable.postCode],
+                    it[DBUserTable.oauthId]
                 )
             }
 
@@ -144,29 +93,6 @@ class ManagerOrder {
             set(DBOrderTable.address, newOrder.address)
             set(DBOrderTable.price, newOrder.price)
         } as Int
-
-
-        val createdOrderDetails = newOrder.products.map { row ->
-            ktormDatabase.insertAndGenerateKey(DBOrderDetailsTable) {
-                set(DBOrderDetailsTable.order, order)
-                set(DBOrderDetailsTable.quantity, row.quantity)
-                set(DBOrderDetailsTable.product,
-                    ktormDatabase.from(DBProductTable)
-                        .select()
-                        .where { DBProductTable.id eq row.product.id }
-                        .map {
-                            Product(
-                                it[DBProductTable.id]!!,
-                                it[DBProductTable.name]!!,
-                                it[DBProductTable.description]!!,
-                                it[DBProductTable.price]!!,
-                                it[DBProductTable.recommendations]!!,
-                                it[DBProductTable.url]!!,
-                                it[DBProductTable.subcategory]!!,
-                            )
-                        }[0].id)
-            }
-        }
 
         return OrderDraft(order, newOrder.date, newOrder.address, newOrder.price)
     }

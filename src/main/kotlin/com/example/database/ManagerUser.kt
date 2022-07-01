@@ -12,10 +12,10 @@ class ManagerUser {
     fun getUserInfo(id: String): List<User> {
         return ktormDatabase.from(DBUserTable)
             .select()
-            .where { DBUserTable.oauth_id eq id }
+            .where { DBUserTable.oauthId eq id }
             .map{
                 User(it[DBUserTable.id]!!, it[DBUserTable.name], it[DBUserTable.city], it[DBUserTable.street],
-                    it[DBUserTable.apartment_no], it[DBUserTable.post_code], it[DBUserTable.oauth_id])
+                    it[DBUserTable.apartmentNo], it[DBUserTable.postCode], it[DBUserTable.oauthId])
             }
     }
 
@@ -23,11 +23,11 @@ class ManagerUser {
         val updatedRows = ktormDatabase.update(DBUserTable){
             set(DBUserTable.name, updatedUser.name)
             set(DBUserTable.city, updatedUser.city)
-            set(DBUserTable.apartment_no, updatedUser.apartment_no)
-            set(DBUserTable.post_code, updatedUser.post_code)
+            set(DBUserTable.apartmentNo, updatedUser.apartmentNo)
+            set(DBUserTable.postCode, updatedUser.postCode)
             set(DBUserTable.street, updatedUser.street)
             where {
-                it.oauth_id eq userId
+                it.oauthId eq userId
             }
         }
         return updatedRows > 0
@@ -36,11 +36,11 @@ class ManagerUser {
     fun checkIfUserExists(oauthId: String):Boolean{
         val user = ktormDatabase.from(DBUserTable).select()
             .where{
-                DBUserTable.oauth_id eq oauthId
+                DBUserTable.oauthId eq oauthId
             }
             .map{
                 User(it[DBUserTable.id]!!, it[DBUserTable.name], null, null,
-                    null, null, it[DBUserTable.oauth_id])
+                    null, null, it[DBUserTable.oauthId])
             }
         return user.size !== 0
     }
@@ -49,18 +49,19 @@ class ManagerUser {
         if (userExists) {
             var userId = ktormDatabase.from(DBUserTable).select(DBUserTable.id)
                 .where {
-                    DBUserTable.oauth_id eq id
+                    DBUserTable.oauthId eq id
                 }
                 .map {
                     User(
                         it[DBUserTable.id]!!, it[DBUserTable.name], null, null,
-                        null, null, it[DBUserTable.oauth_id]
+                        null, null, it[DBUserTable.oauthId]
                     )
                 }
+            return userId[0].id
         } else {
             var userId = ktormDatabase.insertAndGenerateKey(DBUserTable) {
                 set(DBUserTable.name, name)
-                set(DBUserTable.oauth_id, id)
+                set(DBUserTable.oauthId, id)
             } as Int
             return userId
         }

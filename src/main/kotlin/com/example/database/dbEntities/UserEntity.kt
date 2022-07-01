@@ -9,9 +9,9 @@ object DBUserTable: Table<DBUserEntity>("user") {
     val name = varchar("name").bindTo { it.name }
     val city = varchar("city").bindTo { it.city }
     val street = varchar("street").bindTo { it.street }
-    val apartment_no = varchar("apartment_no").bindTo { it.apartment_no }
-    val post_code = varchar("post_code").bindTo { it.post_code }
-    var oauth_id = varchar("oauth_id").bindTo { it.oauth_id }
+    val apartmentNo = varchar("apartment_no").bindTo { it.apartmentNo }
+    val postCode = varchar("post_code").bindTo { it.postCode }
+    var oauthId = varchar("oauth_id").bindTo { it.oauthId }
 
 }
 
@@ -21,7 +21,7 @@ interface DBUserEntity: Entity<DBUserEntity> {
     val name: String
     val city: String
     val street: String
-    val apartment_no: String
-    val post_code: String
-    val oauth_id: String
+    val apartmentNo: String
+    val postCode: String
+    val oauthId: String
 }

@@ -1,12 +1,9 @@
 package com.example.database
 
 import com.example.database.dbEntities.DBCategoryTable
-import com.example.database.dbEntities.DBSubcategorieEntity
 import com.example.database.dbEntities.DBSubcategoryTable
 import com.example.entities.category.Category
 import com.example.entities.category.SubcategoriesForCategories
-import com.example.entities.product.Product
-import com.example.entities.subcategory.Subcategory
 import org.ktorm.dsl.*
 
 class ManagerCategory {

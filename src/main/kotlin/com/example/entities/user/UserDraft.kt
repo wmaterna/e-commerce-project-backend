@@ -4,6 +4,6 @@ data class UserDraft(
     var name: String,
     var city: String,
     var street: String,
-    var apartment_no: String,
-    var post_code: String,
+    var apartmentNo: String,
+    var postCode: String,
 )
