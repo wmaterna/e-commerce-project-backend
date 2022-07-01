@@ -1,7 +1,14 @@
 package com.example
 
+
+import com.stripe.Stripe
+import com.stripe.model.PaymentIntent
+import com.stripe.param.PaymentIntentCreateParams
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.example.database.ManagerOrder
+import com.example.entities.order.OrderDraft
+import com.example.entities.payment.Payments
 import com.example.oauth.authGithub
 import com.example.oauth.authenticationRoutes
 import io.ktor.client.*
@@ -17,6 +24,7 @@ import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.response.*
 import com.example.routing.*
+import io.ktor.server.request.*
 
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
@@ -56,7 +64,8 @@ fun Application.module() {
                     accessTokenUrl = "https://github.com/login/oauth/access_token",
                     requestMethod = HttpMethod.Post,
                     clientId = System.getenv("GITHUB_CLIENT_ID"),
-                    clientSecret = System.getenv("GITHUB_CLIENT_SECRET")
+                    clientSecret = System.getenv("GITHUB_CLIENT_SECRET"),
+                    defaultScopes = listOf("https://www.googleapis.com/auth/userinfo.profile")
                 )
             }
         }
@@ -96,15 +105,37 @@ fun Application.module() {
         subcategoryRoutes()
         productsRouting()
         categoriesRouting()
-        opinionRouting()
+
 
         get("/") {
             call.respondText("Hello World!")
+
         }
+        Stripe.apiKey = System.getenv("STRIPE_API_KEY")
+
+        post("/createPayment") {
+            val paymentsAmount = call.receive<Payments>()
+
+            val paymentParams: PaymentIntentCreateParams = PaymentIntentCreateParams.builder()
+                .setAmount((paymentsAmount.amount * 100).toLong())
+                .setCurrency("pln")
+                .setAutomaticPaymentMethods(
+                    PaymentIntentCreateParams.AutomaticPaymentMethods
+                        .builder()
+                        .setEnabled(true)
+                        .build()
+                )
+                .build()
+
+            val payment: PaymentIntent = PaymentIntent.create(paymentParams)
+            call.respond(object { val clientSecret = payment.clientSecret })
+        }
+
 
         authenticationRoutes()
         authGithub()
         authenticate("auth-jwt") {
+            opinionRouting()
             orderRouting()
             userRouting()
         }

@@ -5,8 +5,11 @@ import com.example.entities.opinion.OpinionDraft
 import io.ktor.server.request.*
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.auth.jwt.JWTPrincipal
 
 fun Route.opinionRouting(){
 
@@ -14,8 +17,17 @@ fun Route.opinionRouting(){
 
     post("/opinion"){
         val opinionDraft = call.receive<OpinionDraft>()
-        val opinionId = opinionRepo.addOpinion(opinionDraft)
-        call.respond(opinionId)
+        val principal = call.principal<JWTPrincipal>()
+        principal?.getClaim("id", String::class)?.run {
+            val opinion = opinionRepo.addOpinion(opinionDraft, this)
+            if (opinion == null) {
+                call.respond(
+                    HttpStatusCode.NotFound, "Not found user"
+                )
+            } else {
+                call.respond(opinion)
+            }
+        }
     }
 
 

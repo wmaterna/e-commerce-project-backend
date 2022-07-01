@@ -2,6 +2,7 @@ package com.example.oauth
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.example.database.ManagerUser
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
@@ -18,7 +19,9 @@ fun Route.authGithub(httpClient: HttpClient = httC) {
     val issuer =  System.getenv("KTOR_JWT_ISSUER")
     val audience =  System.getenv("KTOR_JWT_AUDIENCE")
 
-    authenticate("auth-aouth-github") {
+    val userRepo = ManagerUser()
+
+    authenticate("auth-oauth-github") {
         get("/login-github") {
         }
 
@@ -29,11 +32,12 @@ fun Route.authGithub(httpClient: HttpClient = httC) {
                     header(key = HttpHeaders.Authorization, "token ${principal?.accessToken.toString()}")
                 }.body()
 
+                userRepo.createUser(userInfo.id, userInfo.name);
                 val token = JWT.create()
                     .withAudience(audience)
                     .withIssuer(issuer)
-                    .withClaim("name", userInfo.name)
-                    .withExpiresAt(Date(System.currentTimeMillis() + 60000))
+                    .withClaim("id", userInfo.id)
+                    .withExpiresAt(Date(System.currentTimeMillis() + 1000000))
                     .sign(Algorithm.HMAC256(secret))
                 call.response.cookies.append(
                     Cookie(

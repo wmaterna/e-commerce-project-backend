@@ -30,6 +30,9 @@ dependencies {
     implementation ("org.ktorm:ktorm-support-sqlite:3.2.0")
     implementation ("org.xerial:sqlite-jdbc:3.34.0")
 
+    //stripe
+    implementation("com.stripe:stripe-java:20.126.0")
+
     implementation("io.ktor:ktor-server-cors:$ktor_version")
     implementation("io.ktor:ktor-auth-jwt:1.6.7")
     implementation("io.ktor:ktor-server-auth:$ktor_version")

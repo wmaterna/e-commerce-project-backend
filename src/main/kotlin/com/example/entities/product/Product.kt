@@ -5,7 +5,7 @@ data class Product(
     val id: Int,
     var name: String,
     var description: String,
-    var price: Long,
+    var price: Double,
     var recommendations: String,
     var url: String,
     var subcategoryId: Int,

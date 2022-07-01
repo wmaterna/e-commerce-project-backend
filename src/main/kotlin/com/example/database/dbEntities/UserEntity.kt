@@ -11,6 +11,7 @@ object DBUserTable: Table<DBUserEntity>("user") {
     val street = varchar("street").bindTo { it.street }
     val apartment_no = varchar("apartment_no").bindTo { it.apartment_no }
     val post_code = varchar("post_code").bindTo { it.post_code }
+    var oauth_id = varchar("oauth_id").bindTo { it.oauth_id }
 
 }
 
@@ -22,4 +23,5 @@ interface DBUserEntity: Entity<DBUserEntity> {
     val street: String
     val apartment_no: String
     val post_code: String
+    val oauth_id: String
 }

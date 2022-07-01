@@ -1,12 +1,12 @@
 package com.example.entities.orderDetails
 
-import com.example.entities.product.Product
+import com.example.entities.product.ProuctInfo
 
-data class NewOrderDetails(
-    val id: Int,
-    var order: Int,
-    var quantity: Int,
-    var product: Int,
+data class NewOrder(
+    var date: String,
+    var price: Double,
+    var address: String,
+    var products: List<ProuctInfo>,
 )
 data class OrderDetailsResponse(
     var quantity: Int,

@@ -8,7 +8,7 @@ object DBProductTable: Table<DBProductEntity>("product") {
     val id = int("id").primaryKey().bindTo { it.id }
     val name = varchar("name").bindTo { it.name }
     val description = varchar("description").bindTo { it.description }
-    val price = long("price").bindTo { it.price }
+    val price = double("price").bindTo { it.price }
     val recommendations = varchar("recommendations").bindTo { it.recommendations }
     val url = varchar("url").bindTo { it.url }
     val subcategory = int("subcategor_id").references(DBSubcategoryTable) { it.subcategory }
@@ -19,7 +19,7 @@ interface DBProductEntity: Entity<DBProductEntity> {
     val id: Int
     val name: String
     val description: String
-    val price: Long
+    val price: Double
     val recommendations: String
     val url: String
     val subcategory: DBSubcategorieEntity

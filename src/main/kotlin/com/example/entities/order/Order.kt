@@ -8,6 +8,6 @@ data class Order(
     var date: String,
     var address: String,
     var price: Double,
-    var user: List<User>,
+    var user: User,
     var products: List<OrderDetails>,
 )
