@@ -70,10 +70,3 @@ dependencies {
 
 }
 
-tasks {
-    shadowJar {
-        manifest {
-            attributes(Pair("Main-Class", "io.ktor.server.netty.EngineMain"))
-        }
-    }
-}

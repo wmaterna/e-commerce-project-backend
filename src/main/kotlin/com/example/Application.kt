@@ -91,8 +91,11 @@ fun Application.module() {
 
     }
     install(CORS) {
-        allowHost("*")
+        allowHost("localhost:3000")
         allowHeader(HttpHeaders.ContentType)
+        allowMethod(HttpMethod.Put)
+        allowMethod(HttpMethod.Delete)
+        allowHeader(HttpHeaders.Authorization)
     }
 
     install(ContentNegotiation) {
