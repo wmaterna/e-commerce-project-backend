@@ -43,7 +43,7 @@ fun Application.module() {
     install(Authentication) {
 
         oauth("auth-oauth-google") {
-            urlProvider = { "http://localhost:8080/hello" }
+            urlProvider = { "https://backendplant.azurewebsites.net/hello" }
             providerLookup = {
                 OAuthServerSettings.OAuth2ServerSettings(
                     name = "google",
@@ -58,7 +58,7 @@ fun Application.module() {
             client = HttpClient(CIO)
         }
         oauth("auth-oauth-github") {
-            urlProvider = { "http://localhost:8080/oauth-github" }
+            urlProvider = { "https://backendplant.azurewebsites.net/oauth-github" }
             client = HttpClient(CIO)
             providerLookup = {
                 OAuthServerSettings.OAuth2ServerSettings(
@@ -97,6 +97,7 @@ fun Application.module() {
     }
     install(CORS) {
         allowHost("localhost:3000")
+        allowHost("https://newappfront.azurewebsites.net/")
         allowHeader(HttpHeaders.ContentType)
         allowMethod(HttpMethod.Put)
         allowMethod(HttpMethod.Delete)
