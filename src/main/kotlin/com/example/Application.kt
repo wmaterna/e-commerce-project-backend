@@ -96,12 +96,15 @@ fun Application.module() {
 
     }
     install(CORS) {
-        allowHost("localhost:3000")
-        allowHost("https://newappfront.azurewebsites.net/")
-        allowHeader(HttpHeaders.ContentType)
-        allowMethod(HttpMethod.Put)
-        allowMethod(HttpMethod.Delete)
-        allowHeader(HttpHeaders.Authorization)
+        anyHost()
+//        allowHost("newappfront.azurewebsites:3000")
+//        allowHost("newappfront.azurewebsites")
+//        allowHost("newappfront.azurewebsites", subDomains = listOf("en", "de", "es","net"))
+//        allowHost("newappfront.azurewebsites", schemes = listOf("http", "https"))
+//        allowHeader(HttpHeaders.ContentType)
+//        allowMethod(HttpMethod.Put)
+//        allowMethod(HttpMethod.Delete)
+//        allowHeader(HttpHeaders.Authorization)
     }
 
     install(ContentNegotiation) {
