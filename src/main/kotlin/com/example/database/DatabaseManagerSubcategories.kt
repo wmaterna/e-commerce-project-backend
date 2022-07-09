@@ -9,7 +9,7 @@ import org.ktorm.dsl.*
 class DatabaseManagerSubcategories {
 
     private val database = DatabaseManager()
-    private val ktormDatabase = database.dataBaseConnection()
+    private val ktormDatabase = database.connect()
 
     fun getAllSubcategories(): List<Subcategory> {
         return ktormDatabase.from(DBSubcategoryTable)

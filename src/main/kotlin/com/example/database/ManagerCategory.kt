@@ -8,7 +8,7 @@ import org.ktorm.dsl.*
 
 class ManagerCategory {
     private val database = DatabaseManager()
-    private val ktormDatabase = database.dataBaseConnection()
+    private val ktormDatabase = database.connect()
 
     fun getCategories() : List<Category> {
         val categories = ktormDatabase.from(DBCategoryTable)

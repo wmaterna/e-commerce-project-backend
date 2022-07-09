@@ -15,9 +15,9 @@ import java.util.*
 
 fun Route.authGithub(httpClient: HttpClient = httC) {
 
-    val secret = System.getenv("KTOR_JWT_SECRET")
-    val issuer =  System.getenv("KTOR_JWT_ISSUER")
-    val audience =  System.getenv("KTOR_JWT_AUDIENCE")
+    val secret = environment?.config?.property("jwt.secret")?.getString()
+    val issuer = environment?.config?.property("jwt.issuer")?.getString()
+    val audience = environment?.config?.property("jwt.audience")?.getString()
 
     val userRepo = ManagerUser()
 

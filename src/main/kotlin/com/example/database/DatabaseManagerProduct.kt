@@ -9,7 +9,7 @@ import org.ktorm.dsl.*
 
 class DatabaseManagerProduct {
     private val database = DatabaseManager()
-    private val ktormDatabase = database.dataBaseConnection()
+    private val ktormDatabase = database.connect()
 
     fun getAllProducts(): List<Product> {
         return ktormDatabase.from(DBProductTable)

@@ -6,6 +6,7 @@ import com.stripe.model.PaymentIntent
 import com.stripe.param.PaymentIntentCreateParams
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.example.database.DatabaseManager
 import com.example.entities.payment.Payments
 import com.example.oauth.authGithub
 import com.example.oauth.authenticationRoutes
@@ -29,11 +30,15 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 @Suppress("unused")
 fun Application.module() {
+    val INIT_SCRIPT = "init-sqlite-data.sql"
+    val sqliteDatabase = DatabaseManager()
+    val db = sqliteDatabase.connect()
 
-    val secret = System.getenv("KTOR_JWT_SECRET")
-    val issuer =  System.getenv("KTOR_JWT_ISSUER")
-    val audience =  System.getenv("KTOR_JWT_AUDIENCE")
-    val myRealm =  System.getenv("KTOR_JWT_REALM")
+    sqliteDatabase.execSqlScript(INIT_SCRIPT, db)
+    val secret = environment.config.property("jwt.secret").getString()
+    val issuer = environment.config.property("jwt.issuer").getString()
+    val audience = environment.config.property("jwt.audience").getString()
+    val myRealm = environment.config.property("jwt.realm").getString()
 
     install(Authentication) {
 

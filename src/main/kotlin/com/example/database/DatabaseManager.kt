@@ -9,17 +9,43 @@ import org.slf4j.LoggerFactory
 class DatabaseManager {
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
-    private val ktormDatabase: Database
+    fun connect(): Database {
+        // in memory database
+        // url = "jdbc:sqlite::memory:"
 
-    init {
-        ktormDatabase = Database.connect(
+        var ktormDatabase: Database = Database.connect(
             url = "jdbc:sqlite:sample.db",
             logger = Slf4jLoggerAdapter(logger),
             dialect = SQLiteDialect()
         )
-    }
-
-    fun dataBaseConnection(): Database{
         return ktormDatabase
     }
+
+    fun execSqlScript(filename: String, database: Database) {
+        database.useConnection { conn ->
+            conn.createStatement().use { statement ->
+                javaClass.classLoader
+                    ?.getResourceAsStream(filename)
+                    ?.bufferedReader()
+                    ?.use { reader ->
+                        for (sql in reader.readText().split(';')) {
+                            if (sql.any { it.isLetterOrDigit() }) {
+                                statement.executeUpdate(sql)
+                            }
+                        }
+                    }
+            }
+        }
+    }
+//    init {
+//        ktormDatabase = Database.connect(
+//            url = "jdbc:sqlite:sample.db",
+//            logger = Slf4jLoggerAdapter(logger),
+//            dialect = SQLiteDialect()
+//        )
+//    }
+
+//    fun dataBaseConnection(): Database{
+//        return ktormDatabase
+//    }
 }
