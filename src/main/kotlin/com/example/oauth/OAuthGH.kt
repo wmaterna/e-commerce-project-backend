@@ -46,7 +46,7 @@ fun Route.authGithub(httpClient: HttpClient = httC) {
                     )
                 )
                 call.response.headers.append("Authorization", "Bearer $token")
-                call.respondRedirect("http://localhost:3000/user/info")
+                call.respondRedirect("https://newappfront.azurewebsites.net/user/info")
             } else {
                 call.respondRedirect("/")
             }
