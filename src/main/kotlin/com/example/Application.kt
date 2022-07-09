@@ -30,11 +30,11 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 @Suppress("unused")
 fun Application.module() {
-    val INIT_SCRIPT = "init-sqlite-data.sql"
+    val INITSCRIPT = "init-sqlite-data.sql"
     val sqliteDatabase = DatabaseManager()
     val db = sqliteDatabase.connect()
 
-    sqliteDatabase.execSqlScript(INIT_SCRIPT, db)
+    sqliteDatabase.execSqlScript(INITSCRIPT, db)
     val secret = environment.config.property("jwt.secret").getString()
     val issuer = environment.config.property("jwt.issuer").getString()
     val audience = environment.config.property("jwt.audience").getString()
