@@ -53,13 +53,6 @@ fun Route.authenticationRoutes(httpClient: HttpClient = httC) {
                     .withExpiresAt(Date(System.currentTimeMillis() + 1000000))
                     .sign(Algorithm.HMAC256(secret))
 
-                call.response.cookies.append(
-                    Cookie(
-                        "jwt-token",
-                        token,
-                    )
-                )
-                call.response.headers.append("Authorization", "Bearer $token")
                 call.respondRedirect("https://newappfront.azurewebsites.net/user/info?token=${token}")
 
             } else {
