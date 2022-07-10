@@ -1,6 +1,4 @@
 package com.example
-
-
 import com.stripe.Stripe
 import com.stripe.model.PaymentIntent
 import com.stripe.param.PaymentIntentCreateParams
@@ -96,15 +94,18 @@ fun Application.module() {
 
     }
     install(CORS) {
-        anyHost()
-//        allowHost("newappfront.azurewebsites:3000")
-//        allowHost("newappfront.azurewebsites")
-//        allowHost("newappfront.azurewebsites", subDomains = listOf("en", "de", "es","net"))
-//        allowHost("newappfront.azurewebsites", schemes = listOf("http", "https"))
-//        allowHeader(HttpHeaders.ContentType)
-//        allowMethod(HttpMethod.Put)
-//        allowMethod(HttpMethod.Delete)
-//        allowHeader(HttpHeaders.Authorization)
+        allowHost("newappfront.azurewebsites.net", schemes = listOf("http", "https"))
+        allowHost("localhost:3000", schemes = listOf("http", "https"))
+        allowMethod(HttpMethod.Put)
+        allowMethod(HttpMethod.Delete)
+        allowMethod(HttpMethod.Patch)
+        allowMethod(HttpMethod.Options)
+        allowHeader(HttpHeaders.Authorization)
+        allowHeader(HttpHeaders.ContentType)
+        allowHeader(HttpHeaders.ContentType)
+        allowHeader(HttpHeaders.AccessControlAllowCredentials)
+        allowHeader(HttpHeaders.AccessControlAllowOrigin)
+        allowHeader(HttpHeaders.AccessControlAllowHeaders)
     }
 
     install(ContentNegotiation) {

@@ -60,7 +60,7 @@ fun Route.authenticationRoutes(httpClient: HttpClient = httC) {
                     )
                 )
                 call.response.headers.append("Authorization", "Bearer $token")
-                call.respondRedirect("https://newappfront.azurewebsites.net/user/info")
+                call.respondRedirect("https://newappfront.azurewebsites.net/user/info?token=${token}")
 
             } else {
                 call.respondRedirect("/")
